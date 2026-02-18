@@ -1,0 +1,14 @@
+[package]
+name = "nucc-player-color-param-json"
+version = "0.1.0"
+authors = ["Kojo Bailey"]
+description = "JSON de/serialiser for the PlayerColorParam data structure used across CyberConnect2 NUCC games."
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[dependencies]
+
+[dependencies.player-color-param]
+git = "https://github.com/KojoBailey/nucc-binary-lib-rs.git"
+package = "nucc-player-color-param"
