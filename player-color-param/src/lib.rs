@@ -25,12 +25,17 @@ pub fn from_json(json: &str) -> Result<PlayerColorParam, serde_json::Error> {
 }
 
 pub fn to_json(param: &PlayerColorParam) -> Result<String, serde_json::Error> {
+    let entries = {
+        let mut entries = param.entries.clone();
+        entries.sort_keys();
+        entries.iter()
+            .map(|(key, rgb)| (key_to_string(key), rgb.to_hex_str(true)))
+            .collect()
+    };
     let layout = PlayerColorParamJson {
         filetype: api_filetype(),
         version: 260218,
-        entries: param.entries.iter()
-            .map(|(key, rgb)| (key_to_string(key), rgb.to_hex_str(true)))
-            .collect(),
+        entries,
     };
     let json = serde_json::to_string_pretty(&layout)?;
 
@@ -69,12 +74,11 @@ fn key_to_string(key: &EntryKey) -> String {
 #[cfg(test)]
 mod tests {
     use super::*;
-    use player_color_param::{EntryKey, RGB, PlayerColorParam};
-    use std::collections::HashMap;
+    use player_color_param::{IndexMap, EntryKey, RGB, PlayerColorParam};
 
     #[test]
     fn test_two_way() {
-        let mut entries = HashMap::new();
+        let mut entries = IndexMap::new();
         let entry_key = EntryKey {
             character_id: "5grn01".to_string(),
             costume_index: 2,
