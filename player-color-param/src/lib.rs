@@ -1,9 +1,9 @@
-use player_color_param::PlayerColorParam;
+use player_color_param::{EntryKey, RGB, PlayerColorParam};
 use serde::{Deserialize, Serialize};
 use std::collections::HashMap;
 
 #[derive(Serialize, Deserialize)]
-pub struct PlayerColorParamJson {
+struct PlayerColorParamJson {
     #[serde(default = "api_filetype")]
     filetype: String,
     version: u32,
@@ -15,6 +15,15 @@ fn api_filetype() -> String {
     "PlayerColorParam".to_string()
 }
 
+pub fn from_json(json: &str) -> Result<PlayerColorParam, serde_json::Error> {
+    let layout: PlayerColorParamJson = serde_json::from_str(json)?;
+    Ok(PlayerColorParam {
+        entries: layout.entries.iter()
+            .filter_map(|(key, val)| Some((string_to_key(key)?, RGB::from_hex_str(val)?)))
+            .collect(),
+    })
+}
+
 pub fn to_json(param: &PlayerColorParam) -> Result<String, serde_json::Error> {
     let layout = PlayerColorParamJson {
         filetype: api_filetype(),
@@ -23,19 +32,17 @@ pub fn to_json(param: &PlayerColorParam) -> Result<String, serde_json::Error> {
             .map(|(key, rgb)| (key_to_string(key), rgb.to_hex_str(true)))
             .collect(),
     };
-    serde_json::to_string_pretty(&layout)
+    let json = serde_json::to_string_pretty(&layout)?;
+
+    let mut lines: Vec<&str> = json.lines().collect();
+    if lines.len() > 2 {
+        lines.insert(3, "");
+    }
+
+    Ok(lines.join("\n"))
 }
 
-pub fn from_json(json: &str) -> Result<PlayerColorParam, serde_json::Error> {
-    let layout: PlayerColorParamJson = serde_json::from_str(json)?;
-    Ok(PlayerColorParam {
-        entries: layout.entries.iter()
-            .filter_map(|(key, val)| Some((string_to_key(key)?, player_color_param::RGB::from_hex_str(val)?)))
-            .collect(),
-    })
-}
-
-fn string_to_key(s: &str) -> Option<player_color_param::EntryKey> {
+fn string_to_key(s: &str) -> Option<EntryKey> {
     if s.len() != 10 {
         return None;
     }
@@ -48,13 +55,48 @@ fn string_to_key(s: &str) -> Option<player_color_param::EntryKey> {
         return None;
     }
 
-    Some(player_color_param::EntryKey {
+    Some(EntryKey {
         character_id,
         costume_index,
         alt_index,
     })
 }
 
-fn key_to_string(key: &player_color_param::EntryKey) -> String {
+fn key_to_string(key: &EntryKey) -> String {
     format!("{}{}{}col{}", &key.character_id[0..4], key.costume_index, &key.character_id[5..6], key.alt_index)
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use player_color_param::{EntryKey, RGB, PlayerColorParam};
+    use std::collections::HashMap;
+
+    #[test]
+    fn test_two_way() {
+        let mut entries = HashMap::new();
+        let entry_key = EntryKey {
+            character_id: "5grn01".to_string(),
+            costume_index: 2,
+            alt_index: 3,
+        };
+        entries.insert(
+            entry_key.clone(),
+            RGB { red: 255, green: 0, blue: 69 },
+        );
+
+        let param = PlayerColorParam { entries };
+        let json = to_json(&param).unwrap();
+
+        println!("Generated JSON:\n{}", json);
+        assert!(json.contains("5grn21col3"));
+        assert!(json.contains("#FF0045"));
+
+        let param = from_json(&json).unwrap();
+
+        assert!(param.entries.contains_key(&entry_key));
+        assert_eq!(param.entries[&entry_key].red, 255);
+        assert_eq!(param.entries[&entry_key].green, 0);
+        assert_eq!(param.entries[&entry_key].blue, 69);
+    }
 }

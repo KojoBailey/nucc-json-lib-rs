@@ -17,7 +17,7 @@ checksum = "f8ca58f447f06ed17d5fc4043ce1b10dd205e060fb3ce5b979b8ed8e59ff3f79"
 [[package]]
 name = "nucc-player-color-param"
 version = "0.1.0"
-source = "git+https://github.com/KojoBailey/nucc-binary-lib-rs.git#44c2eb61388786c60c74058b7111dbd572bcf34c"
+source = "git+https://github.com/KojoBailey/nucc-binary-lib-rs.git#1d0a0501619b8d9ecfd39db260fdd6f1d72bd562"
 dependencies = [
  "version",
 ]
@@ -112,7 +112,7 @@ checksum = "e6e4313cd5fcd3dad5cafa179702e2b244f760991f45397d14d4ebf38247da75"
 [[package]]
 name = "version"
 version = "1.0.0"
-source = "git+https://github.com/KojoBailey/nucc-binary-lib-rs.git#44c2eb61388786c60c74058b7111dbd572bcf34c"
+source = "git+https://github.com/KojoBailey/nucc-binary-lib-rs.git#1d0a0501619b8d9ecfd39db260fdd6f1d72bd562"
 
 [[package]]
 name = "zmij"
