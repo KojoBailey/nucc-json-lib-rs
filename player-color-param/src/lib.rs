@@ -25,17 +25,12 @@ pub fn from_json(json: &str) -> Result<PlayerColorParam, serde_json::Error> {
 }
 
 pub fn to_json(param: &PlayerColorParam) -> Result<String, serde_json::Error> {
-    let entries = {
-        let mut entries = param.entries.clone();
-        entries.sort_keys();
-        entries.iter()
-            .map(|(key, rgb)| (key_to_string(key), rgb.to_hex_str(true)))
-            .collect()
-    };
     let layout = PlayerColorParamJson {
         filetype: api_filetype(),
         version: 260218,
-        entries,
+        entries: param.entries.iter()
+            .map(|(key, rgb)| (key_to_string(key), rgb.to_hex_str(true)))
+            .collect(),
     };
     let json = serde_json::to_string_pretty(&layout)?;
 
