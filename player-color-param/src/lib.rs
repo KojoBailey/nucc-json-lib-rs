@@ -1,6 +1,6 @@
-use player_color_param::{EntryKey, RGB, PlayerColorParam};
+use player_color_param::{PlayerColorParam, EntryKey, RGB};
 use serde::{Deserialize, Serialize};
-use std::collections::HashMap;
+use indexmap::IndexMap;
 
 #[derive(Serialize, Deserialize)]
 struct PlayerColorParamJson {
@@ -8,7 +8,7 @@ struct PlayerColorParamJson {
     filetype: String,
     version: u32,
     #[serde(flatten)]
-    entries: HashMap<String, String>,
+    entries: IndexMap<String, String>,
 }
 
 fn api_filetype() -> String {
