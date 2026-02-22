@@ -2,9 +2,9 @@
 ## Spec
 All fields use [`snake_case`](https://en.wikipedia.org/wiki/Snake_case).
 
-Currently, there is only one version of this format, so you can use your current date (`YYMMDD`) for the `version` field.
-
 The `filetype` field is required to be `"PlayerColorParam"`.
+
+Currently, there is only one version of this format, so you can use your current date (`YYMMDD`) for the `version` field.
 
 Each entry key is a unique code specifying the character's ID, costume index, and alt index - as seen in the game's `data/spc` directory. For example, Jotaro's Special Costume C Tint Colour 2 would be `3jtr31col1`.
 
