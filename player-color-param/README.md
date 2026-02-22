@@ -12,7 +12,7 @@ All they store is a hex colour code of the format `#RRGGBB`.
 > [!warning]
 > The comments below are invalid and unsupported by JSON officially-speaking.
 
-```json
+```jsonc
 {
   "version": 240930,
   "filetype": "PlayerColorParam",
