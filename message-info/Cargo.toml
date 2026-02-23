@@ -1,0 +1,17 @@
+[package]
+name = "nucc-message-info-json"
+version = "0.1.0"
+authors = ["Kojo Bailey"]
+description = "JSON de/serialiser for the MessageInfo data structure used across CyberConnect2 NUCC games."
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+
+[dependencies]
+serde = { workspace = true }
+serde_json = { workspace = true }
+indexmap = { workspace = true }
+
+[dependencies.player-color-param]
+git = "https://github.com/KojoBailey/nucc-binary-lib-rs.git"
+package = "nucc-message-info"
