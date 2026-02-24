@@ -6,6 +6,19 @@ The `filetype` field is required to be `"MessageInfo"`.
 
 Currently, there is only one version of this format, so you can use your current date (`YYMMDD`) for the `version` field.
 
+The `language` field should be one of the following as a string:
+- `English`
+- `Spanish`
+- `German`
+- `Italian`
+- `French`
+- `Japanese`
+- `Korean`
+- `ChineseSimplified`
+- `ChineseTraditional`
+
+The `colors` field takes a map of symbols to colours of the format `#rrggbbaa`. As of now, there are no built-in presets, but it may be considered in future.
+
 The key for each entry can either be the string's ID, like `1jnt01_btlst_00_1dio01`, or the CRC-32 hash of that ID, like `47f11ca9`.
 
 The contents for each entry are as follows:
@@ -26,9 +39,12 @@ The contents for each entry are as follows:
     "version": 260223,
     "filetype": "MessageInfo",
     "language": "English",
+    "colors": {
+        "r": "#f73939ff"
+    },
 
     "1jnt01_btlst_00_1dio01": {
-        "message": "I will put an end to this here and now, Dio!",
+        "message": "I will put an end to this here and now, <r>Dio</r>!",
         "adx2_file": "v_btl_1jnt01",
         "adx2_cue_index": 23
     },
